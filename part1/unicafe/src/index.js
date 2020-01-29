@@ -2,15 +2,26 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const App = () => {
+  // constants
   const GOOD = 'good'
   const NEUTRAL = 'neutral'
   const BAD = 'bad'
 
-  // save clicks of each button to own state
+  // hooks
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  // calculated values
+  let numberOfFeedbacks = good + neutral + bad
+  let averageRaw = (good - bad) / numberOfFeedbacks
+  let averageFinal = isNaN(averageRaw) ? 'n/a' : averageRaw
+  let percentPositiveRaw = (good / numberOfFeedbacks) * 100
+  let percentPositiveFinal = isNaN(percentPositiveRaw)
+    ? 'n/a'
+    : percentPositiveRaw + '%'
+
+  // event handler
   const handleFeedback = feedback => () =>
     feedback === GOOD
       ? setGood(good + 1)
@@ -34,6 +45,9 @@ const App = () => {
       <p>
         {BAD} {bad}
       </p>
+      <p>all {numberOfFeedbacks}</p>
+      <p>average {averageFinal}</p>
+      <p>positive {percentPositiveFinal}</p>
     </div>
   )
 }

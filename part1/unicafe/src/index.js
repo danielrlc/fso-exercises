@@ -2,9 +2,22 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 // constants
+const ALL = 'all'
+const AVERAGE = 'average'
+const BAD = 'bad'
 const GOOD = 'good'
 const NEUTRAL = 'neutral'
-const BAD = 'bad'
+const POSITIVE = 'positive'
+
+const Button = ({ feedback, handleFeedback }) => (
+  <button onClick={handleFeedback(feedback)}>{feedback}</button>
+)
+
+const Statistic = ({ text, value }) => (
+  <p>
+    {text} {value}
+  </p>
+)
 
 const Statistics = ({
   average,
@@ -16,18 +29,12 @@ const Statistics = ({
 }) => (
   <>
     <h1>statistics</h1>
-    <p>
-      {GOOD} {good}
-    </p>
-    <p>
-      {NEUTRAL} {neutral}
-    </p>
-    <p>
-      {BAD} {bad}
-    </p>
-    <p>all {numberOfFeedbacks}</p>
-    <p>average {average}</p>
-    <p>positive {percentPositive}%</p>
+    <Statistic text={GOOD} value={good} />
+    <Statistic text={NEUTRAL} value={neutral} />
+    <Statistic text={BAD} value={bad} />
+    <Statistic text={ALL} value={numberOfFeedbacks} />
+    <Statistic text={AVERAGE} value={average} />
+    <Statistic text={POSITIVE} value={percentPositive} />
   </>
 )
 
@@ -41,7 +48,10 @@ const App = () => {
   // calculated values
   let numberOfFeedbacks = good + neutral + bad
   let average = (good - bad) / numberOfFeedbacks
-  let percentPositive = (good / numberOfFeedbacks) * 100
+  let percentPositiveRaw = (good / numberOfFeedbacks) * 100
+  let percentPositive = isNaN(percentPositiveRaw)
+    ? `0%`
+    : `${percentPositiveRaw}%`
 
   // event handler
   const handleFeedback = feedback => () => {
@@ -56,9 +66,9 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={handleFeedback(GOOD)}>{GOOD}</button>
-      <button onClick={handleFeedback(NEUTRAL)}>{NEUTRAL}</button>
-      <button onClick={handleFeedback(BAD)}>{BAD}</button>
+      <Button feedback={GOOD} handleFeedback={handleFeedback} />
+      <Button feedback={NEUTRAL} handleFeedback={handleFeedback} />
+      <Button feedback={BAD} handleFeedback={handleFeedback} />
       {feedbackExists ? (
         <Statistics
           average={average}

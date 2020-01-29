@@ -14,9 +14,10 @@ const Button = ({ feedback, handleFeedback }) => (
 )
 
 const Statistic = ({ text, value }) => (
-  <p>
-    {text} {value}
-  </p>
+  <tr>
+    <th scope="row">{text}</th>
+    <td>{value}</td>
+  </tr>
 )
 
 const Statistics = ({
@@ -27,15 +28,21 @@ const Statistics = ({
   numberOfFeedbacks,
   percentPositive,
 }) => (
-  <>
-    <h1>statistics</h1>
+  <table style={{ textAlign: 'left' }}>
+    <caption style={{ textAlign: 'left' }}>statistics</caption>
+
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Result</th>
+    </tr>
+
     <Statistic text={GOOD} value={good} />
     <Statistic text={NEUTRAL} value={neutral} />
     <Statistic text={BAD} value={bad} />
     <Statistic text={ALL} value={numberOfFeedbacks} />
     <Statistic text={AVERAGE} value={average} />
     <Statistic text={POSITIVE} value={percentPositive} />
-  </>
+  </table>
 )
 
 const App = () => {

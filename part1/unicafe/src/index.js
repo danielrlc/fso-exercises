@@ -29,19 +29,24 @@ const Statistics = ({
   percentPositive,
 }) => (
   <table style={{ textAlign: 'left' }}>
-    <caption style={{ textAlign: 'left' }}>statistics</caption>
+    <caption
+      style={{ textAlign: 'left', fontSize: '2rem', fontWeight: 'bold' }}>
+      statistics
+    </caption>
 
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Result</th>
-    </tr>
+    <tbody>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Result</th>
+      </tr>
 
-    <Statistic text={GOOD} value={good} />
-    <Statistic text={NEUTRAL} value={neutral} />
-    <Statistic text={BAD} value={bad} />
-    <Statistic text={ALL} value={numberOfFeedbacks} />
-    <Statistic text={AVERAGE} value={average} />
-    <Statistic text={POSITIVE} value={percentPositive} />
+      <Statistic text={GOOD} value={good} />
+      <Statistic text={NEUTRAL} value={neutral} />
+      <Statistic text={BAD} value={bad} />
+      <Statistic text={ALL} value={numberOfFeedbacks} />
+      <Statistic text={AVERAGE} value={average} />
+      <Statistic text={POSITIVE} value={percentPositive} />
+    </tbody>
   </table>
 )
 

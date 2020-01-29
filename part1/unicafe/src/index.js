@@ -1,53 +1,76 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = () => {
-  // constants
-  const GOOD = 'good'
-  const NEUTRAL = 'neutral'
-  const BAD = 'bad'
+// constants
+const GOOD = 'good'
+const NEUTRAL = 'neutral'
+const BAD = 'bad'
 
+const Statistics = ({
+  average,
+  bad,
+  good,
+  neutral,
+  numberOfFeedbacks,
+  percentPositive,
+}) => (
+  <>
+    <h1>statistics</h1>
+    <p>
+      {GOOD} {good}
+    </p>
+    <p>
+      {NEUTRAL} {neutral}
+    </p>
+    <p>
+      {BAD} {bad}
+    </p>
+    <p>all {numberOfFeedbacks}</p>
+    <p>average {average}</p>
+    <p>positive {percentPositive}%</p>
+  </>
+)
+
+const App = () => {
   // hooks
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [feedbackExists, setFeedbackExists] = useState(false)
 
   // calculated values
   let numberOfFeedbacks = good + neutral + bad
-  let averageRaw = (good - bad) / numberOfFeedbacks
-  let averageFinal = isNaN(averageRaw) ? 'n/a' : averageRaw
-  let percentPositiveRaw = (good / numberOfFeedbacks) * 100
-  let percentPositiveFinal = isNaN(percentPositiveRaw)
-    ? 'n/a'
-    : percentPositiveRaw + '%'
+  let average = (good - bad) / numberOfFeedbacks
+  let percentPositive = (good / numberOfFeedbacks) * 100
 
   // event handler
-  const handleFeedback = feedback => () =>
+  const handleFeedback = feedback => () => {
+    setFeedbackExists(true)
     feedback === GOOD
       ? setGood(good + 1)
       : feedback === NEUTRAL
       ? setNeutral(neutral + 1)
       : setBad(bad + 1)
+  }
 
   return (
     <div>
-      <h1>Give feedback</h1>
+      <h1>give feedback</h1>
       <button onClick={handleFeedback(GOOD)}>{GOOD}</button>
       <button onClick={handleFeedback(NEUTRAL)}>{NEUTRAL}</button>
       <button onClick={handleFeedback(BAD)}>{BAD}</button>
-      <h1>Give statistics</h1>
-      <p>
-        {GOOD} {good}
-      </p>
-      <p>
-        {NEUTRAL} {neutral}
-      </p>
-      <p>
-        {BAD} {bad}
-      </p>
-      <p>all {numberOfFeedbacks}</p>
-      <p>average {averageFinal}</p>
-      <p>positive {percentPositiveFinal}</p>
+      {feedbackExists ? (
+        <Statistics
+          average={average}
+          bad={bad}
+          good={good}
+          neutral={neutral}
+          numberOfFeedbacks={numberOfFeedbacks}
+          percentPositive={percentPositive}
+        />
+      ) : (
+        <p>No feedback given yet</p>
+      )}
     </div>
   )
 }

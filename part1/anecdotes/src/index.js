@@ -10,16 +10,43 @@ const anecdotes = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
 ]
 
-const App = props => {
+const App = ({ anecdotes }) => {
+  const [votesPerAnecdote, setVotesPerAnecdote] = useState(
+    anecdotes.map(anecdote => 0),
+  )
+
   const [selected, setSelected] = useState(0)
+  const [anecdoteWithMostVotes, setAnecdoteWithMostVotes] = useState(null)
 
   const chooseRandomAnecdote = () =>
     setSelected(Math.floor(Math.random() * anecdotes.length))
 
+  const addVote = () => {
+    setVotesPerAnecdote(
+      votesPerAnecdote.map((votes, index) =>
+        index === selected ? votes + 1 : votes,
+      ),
+    )
+
+    if (votesPerAnecdote[selected] === Math.max(...votesPerAnecdote)) {
+      setAnecdoteWithMostVotes(anecdotes[selected])
+    }
+  }
+
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
+      <h1>Anecdote of the day</h1>
+      <p>{anecdotes[selected]}</p>
+      <p>has {votesPerAnecdote[selected]} votes</p>
+      <button onClick={addVote}>Vote</button>
       <button onClick={chooseRandomAnecdote}>next anecdote</button>
+      {anecdoteWithMostVotes ? (
+        <>
+          <h1>Anecdote with most votes</h1>
+          <p>{anecdoteWithMostVotes}</p>
+          <p>has {Math.max(...votesPerAnecdote)} votes</p>
+        </>
+      ) : null}
     </div>
   )
 }

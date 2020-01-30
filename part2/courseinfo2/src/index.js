@@ -1,39 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-const Course = ({ course }) => (
-  <>
-    <Header course={course} />
-    <Content course={course} />
-    <Total course={course} />
-  </>
-)
-
-const Header = ({ course }) => <h1>{course.name}</h1>
-
-const Part = ({ part }) => (
-  <p>
-    {part.name} {part.exercises}
-  </p>
-)
-
-const Content = ({ course }) => (
-  <ul>
-    {course.parts.map(part => (
-      <Part part={part} key={part.id} />
-    ))}
-  </ul>
-)
-
-const Total = ({ course }) => (
-  <p>
-    Number of exercises{' '}
-    {course.parts.reduce(
-      (accumulator, part) => accumulator + part.exercises,
-      0,
-    )}
-  </p>
-)
+import Course from './components/course'
 
 const App = () => {
   const courses = [
@@ -84,7 +51,7 @@ const App = () => {
   return (
     <div>
       {courses.map(course => (
-        <Course course={course} />
+        <Course course={course} key={course.id} />
       ))}
     </div>
   )

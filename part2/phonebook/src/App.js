@@ -6,7 +6,9 @@ const App = () => {
   const handleInputChange = event => setFormInput(event.target.value)
   const handleFormSubmit = event => {
     event.preventDefault()
-    setPersons(persons.concat({ name: formInput }))
+    persons.some(person => person.name === formInput)
+      ? alert(`${formInput} is already in the phonebook. If you meant another ${formInput} then that's too bad.`)
+      : setPersons(persons.concat({ name: formInput }))
     setFormInput('')
   }
 

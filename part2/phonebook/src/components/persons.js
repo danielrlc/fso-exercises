@@ -9,7 +9,7 @@ const Persons = ({ persons, search }) => (
           person.name.toLowerCase().indexOf(search.toLowerCase()) !== -1,
       )
       .map(person => (
-        <Person person={person} />
+        <Person key={person.id} person={person} />
       ))}
   </ul>
 )

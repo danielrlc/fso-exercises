@@ -4,13 +4,33 @@ import axios from 'axios'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
+  const [matchedCountry, setMatchedCountry] = useState(null)
   const [search, setSearch] = useState('')
 
   const handleSearchChange = event => setSearch(event.target.value)
 
+  const toggleCountryData = selectedCountry => () =>
+    setCountries(
+      countries.map(country => {
+        return country.name === selectedCountry
+          ? {
+              ...country,
+              countryDataIsShown: !country.countryDataIsShown,
+            }
+          : {
+              ...country,
+            }
+      }),
+    )
+
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2/all').then(response => {
-      setCountries(response.data)
+      setCountries(
+        response.data.map(countryData => ({
+          ...countryData,
+          countryDataIsShown: false,
+        })),
+      )
     })
   }, [])
 
@@ -23,6 +43,12 @@ const App = () => {
     )
   }, [search, countries])
 
+  useEffect(() => {
+    return filteredCountries.length === 1
+      ? setMatchedCountry(filteredCountries[0])
+      : setMatchedCountry(null)
+  }, [filteredCountries])
+
   return (
     <>
       <div>
@@ -34,24 +60,49 @@ const App = () => {
       ) : filteredCountries.length > 1 && search.length > 0 ? (
         <ul>
           {filteredCountries.map(country => (
-            <li key={country.alpha2Code}>{country.name}</li>
+            <>
+              <li key={country.name}>
+                {country.name}{' '}
+                <button onClick={toggleCountryData(country.name)}>
+                  {country.countryDataIsShown ? 'hide details' : 'show details'}
+                </button>
+              </li>
+              {country.countryDataIsShown ? (
+                <>
+                  <h1>{country.name}</h1>
+                  <p>capital {country.capital}</p>
+                  <p>population {country.population}</p>
+                  <h2>languages</h2>
+                  <ul>
+                    {country.languages.map(language => (
+                      <li key={language.name}>{language.name}</li>
+                    ))}
+                  </ul>
+                  <img
+                    style={{ width: 100 }}
+                    src={country.flag}
+                    alt={`flag of ${country.name}`}
+                  />
+                </>
+              ) : null}
+            </>
           ))}
         </ul>
-      ) : filteredCountries.length === 1 ? (
+      ) : matchedCountry ? (
         <>
-          <h1>{filteredCountries[0].name}</h1>
-          <p>capital {filteredCountries[0].capital}</p>
-          <p>population {filteredCountries[0].population}</p>
+          <h1>{matchedCountry.name}</h1>
+          <p>capital {matchedCountry.capital}</p>
+          <p>population {matchedCountry.population}</p>
           <h2>languages</h2>
           <ul>
-            {filteredCountries[0].languages.map(language => (
-              <li>{language.name}</li>
+            {matchedCountry.languages.map(language => (
+              <li key={language.name}>{language.name}</li>
             ))}
           </ul>
           <img
-            style={{width: 100}}
-            src={filteredCountries[0].flag}
-            alt={`flag of ${filteredCountries[0].name}`}
+            style={{ width: 100 }}
+            src={matchedCountry.flag}
+            alt={`flag of ${matchedCountry.name}`}
           />
         </>
       ) : null}

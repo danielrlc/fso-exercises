@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Filter = ({ search, handleSearchChange }) => (
+const Filter = ({ searchInput, handleSearchInputChange }) => (
   <p>
     filter shown with{' '}
-    <input type="text" value={search} onChange={handleSearchChange} />
+    <input type="text" value={searchInput} onChange={handleSearchInputChange} />
   </p>
 )
 

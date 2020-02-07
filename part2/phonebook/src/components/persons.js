@@ -1,12 +1,12 @@
 import React from 'react'
 import Person from './person'
 
-const Persons = ({ persons, search, deletePerson }) => (
+const Persons = ({ persons, searchInput, deletePerson }) => (
   <ul>
     {persons
       .filter(
         person =>
-          person.name.toLowerCase().indexOf(search.toLowerCase()) !== -1,
+          person.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1,
       )
       .map(person => (
         <Person key={person.id} person={person} deletePerson={deletePerson} />

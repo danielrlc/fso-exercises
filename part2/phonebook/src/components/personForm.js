@@ -2,18 +2,23 @@ import React from 'react'
 
 const PersonForm = ({
   handleFormSubmit,
-  handleNewNameChange,
-  handleNewNumberChange,
-  newName,
-  newNumber,
+  handleNameInputChange,
+  handleNumberInputChange,
+  nameInput,
+  numberInput,
 }) => (
   <form onSubmit={handleFormSubmit}>
     <div>
-      name: <input type="text" value={newName} onChange={handleNewNameChange} />
+      name:{' '}
+      <input type="text" value={nameInput} onChange={handleNameInputChange} />
     </div>
     <div>
       number:{' '}
-      <input type="text" value={newNumber} onChange={handleNewNumberChange} />
+      <input
+        type="text"
+        value={numberInput}
+        onChange={handleNumberInputChange}
+      />
     </div>
     <div>
       <button type="submit">add</button>

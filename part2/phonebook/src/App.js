@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import shortid from 'shortid'
 import Filter from './components/filter'
 import PersonForm from './components/personForm'
 import Persons from './components/persons'
+import personsService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -17,7 +17,7 @@ const App = () => {
 
   const handleFormSubmit = event => {
     event.preventDefault()
-    const newEntry = {
+    const newPerson = {
       name: newName,
       number: newNumber,
       id: shortid.generate(),
@@ -26,15 +26,15 @@ const App = () => {
       ? alert(
           `${newName} is already in the phonebook. If you meant another ${newName} then that's too bad.`,
         )
-      : axios
-          .post('http://localhost:3001/persons', newEntry)
+      : personsService
+          .create(newPerson)
           .then(response => setPersons(persons.concat(response.data)))
     setNewName('')
     setNewNumber('')
   }
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then(response => {
+    personsService.getAll().then(response => {
       setPersons(response.data)
     })
   }, [])

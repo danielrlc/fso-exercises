@@ -33,9 +33,9 @@ const App = () => {
     setNewNumber('')
   }
 
-  const deletePerson = (id, name) => {
+  const deletePerson = ({id, name}) => {
     if (window.confirm(`Delete ${name}`)) {
-      personsService.deletePerson(id, name).then(() => {
+      personsService.deletePerson({id, name}).then(() => {
         setPersons(persons.filter(person => person.id !== id))
       })
     }
